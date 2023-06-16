@@ -12,7 +12,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use NotificationChannels\Telegram\TelegramMessage;
 
 class SendMessageReminder implements ShouldQueue
 {
@@ -37,8 +36,8 @@ class SendMessageReminder implements ShouldQueue
      */
     public function handle()
     {
-        // Mail::to($this->reminder->user->email)
-        //     ->send(new SendReminderEmail($this->reminder));
+        Mail::to($this->reminder->user->email)
+            ->send(new SendReminderEmail($this->reminder));
 
         if($this->reminder->user->tg_token){
             Notification::send($this->reminder, new SendReminderMessage());

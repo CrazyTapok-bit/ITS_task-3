@@ -12,7 +12,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use NotificationChannels\Telegram\TelegramMessage;
 
 class SendMessageStartedEvent implements ShouldQueue
 {
@@ -37,8 +36,8 @@ class SendMessageStartedEvent implements ShouldQueue
      */
     public function handle()
     {
-        // Mail::to($this->event->user->email)
-        //     ->send(new SendEventStartedEmail($this->event));
+        Mail::to($this->event->user->email)
+            ->send(new SendEventStartedEmail($this->event));
 
         if($this->event->user->tg_token){
             Notification::send($this->event, new SendEventStartedMessage());
